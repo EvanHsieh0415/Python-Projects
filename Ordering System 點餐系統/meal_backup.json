@@ -1,0 +1,17 @@
+{
+    "count": 2,
+    "index": {
+        "test1": {
+            "price": 100,
+            "count": 0,
+            "member": [],
+            "money": 0
+        },
+        "test2": {
+            "price": 120,
+            "count": 0,
+            "member": [],
+            "money": 0
+        }
+    }
+}

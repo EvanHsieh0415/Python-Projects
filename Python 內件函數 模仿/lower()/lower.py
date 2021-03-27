@@ -1,7 +1,6 @@
 def lower(Str:str):
-    listStr = list(Str)
     out = ''
-    for i in listStr:
+    for i in Str:
         In = ord(i)
         if In in range(65, 91):
             out += chr(In+32)

@@ -2,14 +2,14 @@ class bank:
     def __init__(self):
         self.accountDict = {}
     
-    def check(self, email, password):
+    def inputCheck(self, email, password):
         if email not in self.accountDict:
             return 'EmailNotFound'
         if self.accountDict[email]['password'] != password:
             return 'PasswrodError'
         return None
 
-    def create(self, email, password, name):
+    def createAccount(self, email, password, name):
         if email in self.accountDict:
             return 'EmailUsed'
         if not name:
@@ -17,8 +17,8 @@ class bank:
         self.accountDict[email] = {'name': name, 'password': password, 'deposit': 0}
         return 'CreateSuccessful'
     
-    def delete(self, email, password):
-        check = bank.check(email, password)
+    def deleteAccount(self, email, password):
+        check = Bank.inputCheck(email, password)
         if check:
             return check
         confirm = input(f'是否確定刪除{self.accountDict[email]["name"]}( True/False ): ')
@@ -29,8 +29,8 @@ class bank:
             return 'ActionCancel'
         return 'UnknowAction'
     
-    def save(self, email, password, amount):
-        check = bank.check(email, password)
+    def saveMoney(self, email, password, amount):
+        check = Bank.inputCheck(email, password)
         if check:
             return check
         if amount.isdigit():
@@ -39,8 +39,8 @@ class bank:
             return 'SaveSuccessful'
         return 'AmountEnterError'
     
-    def take(self, email, password, amount):
-        check = bank.check(email, password)
+    def takeMoney(self, email, password, amount):
+        check = Bank.inputCheck(email, password)
         if check:
             return check
         if amount.isdigit():
@@ -51,13 +51,13 @@ class bank:
             return 'TakeSuccessful'
         return 'AmountEnterError'
     
-    def balance(self, email, password):
-        check = bank.check(email, password)
+    def showDeposit(self, email, password):
+        check = Bank.inputCheck(email, password)
         if check:
             return check
         return self.accountDict[email]['deposit']
 
-bank = bank()
+Bank = bank()
 
 def output(string:str):
     stringDict = {
@@ -94,7 +94,7 @@ def line():
     print('='*100)
 
 line()
-print('歡迎來到芒果銀行！！！\n若您是新用戶，請先創建帳戶 輸入"create"）\n刪除帳戶 請輸入"delete"\n存款 請輸入"save"\n取款 請輸入"take"\n離開此系統 請輸入"leave"')
+print('歡迎來到芒果銀行！！！\n若您是新用戶，請先創建帳戶 輸入"create account"）\n刪除帳戶 請輸入"delete account"\n存款 請輸入"save money"\n取款 請輸入"take money"\n離開此系統 請輸入"leave"')
 line()
 
 tragger = True
@@ -104,14 +104,14 @@ while tragger:
         print('[Error] 請輸入操作名稱')
         line()
         continue
-    if action not in ('create', 'delete', 'save', 'take', 'leave'):
+    if action not in ('create account', 'delete account', 'save money', 'take money', 'leave'):
         print('[Error] 請輸入正確的操作')
         line()
         continue
     if action == 'leave':
         print('程式關閉')
         tragger = False
-    if action in ('create', 'delete', 'save', 'take'):
+    if action in ('create account', 'delete account', 'save money', 'take money'):
         email = input('請輸入E-mail: ')
         if not email:
             print(output('EmailNull'))
@@ -122,24 +122,24 @@ while tragger:
             print(output('PasswordNull'))
             line()
             continue
-        if action in ('save', 'take'):
+        if action in ('save money', 'take money'):
             amount = input('請輸入金額: ')
             if not amount:
                 print(output('AmountNull'))
                 line()
                 continue
-        if action == 'create':
+        if action == 'create account':
             name = input('請輸入使用者名稱: ')
-            out = bank.create(email, password, name)
-        elif action == 'delete':
-            out = bank.delete(email, password)
-        elif action == 'save':
-            out = bank.save(email, password, amount)
-        elif action == 'take':
-            out = bank.take(email, password, amount)
+            out = Bank.createAccount(email, password, name)
+        elif action == 'delete account':
+            out = Bank.deleteAccount(email, password)
+        elif action == 'save money':
+            out = Bank.saveMoney(email, password, amount)
+        elif action == 'take money':
+            out = Bank.takeMoney(email, password, amount)
         print(output(out))
         if out in ('SaveSuccessful', 'TakeSuccessful', 'DepositNotEnough'):
-            print(f'存款餘額: {bank.balance(email, password)}')
+            print(f'存款餘額: {Bank.showDeposit(email, password)}')
     line()
 
 input('Press any key to continue . . .')
